@@ -1,17 +1,20 @@
+
+
 function ConvertHandler() {
 
   // Extracts and calculates the number (supports fractions and decimals)
+// Modify getNum to handle invalid input
 this.getNum = function(input) {
   let result;
   const numRegex = /^[\d/.]+/;
   const match = input.match(numRegex);
-  if (!match) return 1; // default to 1 if no number provided
+  if (!match) return 1; // default to 1 if no number is provided
 
   const numStr = match[0];
 
-  // Check for double fraction (i.e. multiple slashes in the input)
+  // Check for double fraction (more than one slash)
   if ((numStr.match(/\//g) || []).length > 1) {
-    return "invalid number"; // Return error if more than one slash is present
+    return "invalid number";
   }
 
   try {
@@ -23,17 +26,26 @@ this.getNum = function(input) {
   return result;
 };
 
-    
-  // Extracts and validates the unit
-  this.getUnit = function(input) {
-    const unitRegex = /[a-zA-Z]+$/;
-    const match = input.match(unitRegex);
-    if (!match) return "invalid unit";
+// Modify getUnit to handle invalid units
+this.getUnit = function(input) {
+  const validUnits = ['gal', 'L', 'mi', 'km', 'lbs', 'kg'];
+  let result;
+  const unitRegex = /[a-zA-Z]+$/;
+  const unitMatch = input.match(unitRegex);
 
-    const unit = match[0].toLowerCase();
-    const validUnits = ["gal", "l", "mi", "km", "lbs", "kg"];
-    return validUnits.includes(unit) ? (unit === "l" ? "L" : unit) : "invalid unit";
-  };
+  if (unitMatch) {
+    const unit = unitMatch[0].toLowerCase();
+    if (validUnits.includes(unit)) {
+      result = unit;
+    } else {
+      result = "invalid unit";
+    }
+  } else {
+    result = "invalid unit";
+  }
+
+  return result;
+};
 
   // Maps input unit to the corresponding return unit
   this.getReturnUnit = function(initUnit) {
