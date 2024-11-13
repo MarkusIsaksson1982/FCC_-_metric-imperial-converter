@@ -1,21 +1,37 @@
+function numberStringSplitter(input) {
+  let number = input.match(/[.\d\/]+/g) || ["1"];
+  let string = input.match(/[a-zA-Z]+/g)[0];
+  return [number[0], string];
+}
+
+function checkDiv(possibleFraction) {
+  let nums = possibleFraction.split("/");
+  return nums.length > 2 ? false : nums;
+}
+
+
+module.exports = ConvertHandler;
 
 
 function ConvertHandler() {
+  this.getNum = function (input) {
+    let result = numberStringSplitter(input)[0];
+    let nums = checkDiv(result);
+    if (!nums) return undefined;
 
-  // Extracts and calculates the number (supports fractions and decimals)
-// Modify getNum to handle invalid input
-this.getNum = function(input) {
-  let result;
-  const numRegex = /^[\d/.]+/;
-  const match = input.match(numRegex);
-  if (!match) return 1; // default to 1 if no number is provided
+    let num1 = parseFloat(nums[0]);
+    let num2 = parseFloat(nums[1] || "1");
+    if (isNaN(num1) || isNaN(num2)) return undefined;
 
-  const numStr = match[0];
+    return num1 / num2;
+  };
 
-  // Check for double fraction (more than one slash)
-  if ((numStr.match(/\//g) || []).length > 1) {
-    return "invalid number";
-  }
+  this.getUnit = function (input) {
+    let unit = numberStringSplitter(input)[1].toLowerCase();
+    const validUnits = ["km", "gal", "lbs", "mi", "l", "kg"];
+    return validUnits.includes(unit) ? (unit === "l" ? "L" : unit) : undefined;
+  };
+}
 
   try {
     result = eval(numStr);
@@ -26,26 +42,8 @@ this.getNum = function(input) {
   return result;
 };
 
-// Modify getUnit to handle invalid units
-this.getUnit = function(input) {
-  const validUnits = ['gal', 'L', 'mi', 'km', 'lbs', 'kg'];
-  let result;
-  const unitRegex = /[a-zA-Z]+$/;
-  const unitMatch = input.match(unitRegex);
+    
 
-  if (unitMatch) {
-    const unit = unitMatch[0].toLowerCase();
-    if (validUnits.includes(unit)) {
-      result = unit;
-    } else {
-      result = "invalid unit";
-    }
-  } else {
-    result = "invalid unit";
-  }
-
-  return result;
-};
 
   // Maps input unit to the corresponding return unit
   this.getReturnUnit = function(initUnit) {
