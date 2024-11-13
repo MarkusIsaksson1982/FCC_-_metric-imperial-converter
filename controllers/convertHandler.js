@@ -1,21 +1,29 @@
 function ConvertHandler() {
-  
-  // Extracts and calculates the number (supports fractions and decimals)
-  this.getNum = function(input) {
-    let result;
-    const numRegex = /^[\d/.]+/;
-    const match = input.match(numRegex);
-    if (!match) return 1; // default to 1 if no number provided
 
-    const numStr = match[0];
-    try {
-      result = eval(numStr);
-    } catch (e) {
-      result = "invalid number";
-    }
-    return result;
-  };
+  // Extracts and calculates the number (supports fractions and decimals)
+this.getNum = function(input) {
+  let result;
+  const numRegex = /^[\d/.]+/;
+  const match = input.match(numRegex);
+  if (!match) return 1; // default to 1 if no number provided
+
+  const numStr = match[0];
+
+  // Check for double fraction (i.e. multiple slashes in the input)
+  if ((numStr.match(/\//g) || []).length > 1) {
+    return "invalid number"; // Return error if more than one slash is present
+  }
+
+  try {
+    result = eval(numStr);
+  } catch (e) {
+    result = "invalid number";
+  }
   
+  return result;
+};
+
+    
   // Extracts and validates the unit
   this.getUnit = function(input) {
     const unitRegex = /[a-zA-Z]+$/;
