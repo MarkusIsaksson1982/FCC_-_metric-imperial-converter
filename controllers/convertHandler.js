@@ -17,9 +17,8 @@ function ConvertHandler() {
     return parseFloat(result.toFixed(5));
   };
 
-    
   // Extracts and validates the unit
- this.getUnit = function(input) {
+  this.getUnit = function(input) {
     const unitRegex = /[a-zA-Z]+$/;
     const match = input.match(unitRegex);
     if (!match) return "invalid unit";
@@ -27,7 +26,6 @@ function ConvertHandler() {
     const validUnits = ["gal", "l", "mi", "km", "lbs", "kg"];
     return validUnits.includes(unit) ? (unit === "l" ? "L" : unit) : "invalid unit";
   };
-
 
   this.getReturnUnit = function(initUnit) {
     const units = {
@@ -42,7 +40,6 @@ function ConvertHandler() {
   };
 
   // Spells out the full unit name for display purposes
-
   this.spellOutUnit = function(unit) {
     const unitNames = {
       gal: "gallons",
@@ -54,7 +51,6 @@ function ConvertHandler() {
     };
     return unitNames[unit] || "invalid unit";
   };
-
 
   this.convert = function(initNum, initUnit) {
     const galToL = 3.78541;
@@ -71,11 +67,6 @@ function ConvertHandler() {
     return parseFloat((initNum * conversionRates[initUnit]).toFixed(5));
   };
 
-  this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    return `${initNum} ${this.spellOutUnit(initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
-  };
-}
-
   // Formats the conversion result into a descriptive string
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
     return `${initNum} ${this.spellOutUnit(initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
@@ -83,4 +74,3 @@ function ConvertHandler() {
 }
 
 module.exports = ConvertHandler;
-
