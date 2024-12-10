@@ -1,3 +1,5 @@
+/* I have utilized ChatGPT and Perplexity as resources for guidance and learning throughout this project. My approach reflects the growing trend of modern developers using AI tools to enhance their coding processes. However, all the final code presented here is my own work, based on own independently thought out  prompts and without copying prompts or code from others other than snippets. I believe this practice aligns with the principles of academic honesty, as it emphasizes learning and using technology responsibly. */
+
 const chaiHttp = require('chai-http');
 const chai = require('chai');
 let assert = chai.assert;
@@ -67,5 +69,20 @@ suite('Functional Tests', function() {
         done();
       });
   });
+
+  test('Mixed Fractional and Decimal Input (e.g., 2.5/5kg)', function(done) {
+    chai.request(server)
+        .get('/api/convert')
+        .query({ input: '2.5/5kg' })
+        .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.initNum, 0.5);
+            assert.equal(res.body.initUnit, 'kg');
+            assert.approximately(res.body.returnNum, 1.10231, 0.1);
+            assert.equal(res.body.returnUnit, 'lbs');
+            done();
+        });
+   });
+
 
 });
