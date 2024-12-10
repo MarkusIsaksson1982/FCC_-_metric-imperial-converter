@@ -3,26 +3,33 @@
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    const numRegex = /^([\d./]+)/;
+    if (!input) return 1; // Default to 1 if input is undefined or empty
+  
+    const numRegex = /^([\d./]+)?/; // Match the number part of the input
     const match = input.match(numRegex);
-    
-    if (!match || match[1] === '') return 1;
+    if (!match || !match[1]) return 1; // Default to 1 if no number is provided
     
     const numStr = match[1];
-    
+  
+    // Check for double fractions
     if ((numStr.match(/\//g) || []).length > 1) {
       return "invalid number";
     }
-    
+  
+    // Handle fractions (e.g., "2.5/5")
     if (numStr.includes('/')) {
       const [numerator, denominator] = numStr.split('/');
-      if (denominator === '0') return "invalid number";
+      if (!numerator || !denominator || isNaN(numerator) || isNaN(denominator)) {
+        return "invalid number";
+      }
       return parseFloat((parseFloat(numerator) / parseFloat(denominator)).toFixed(5));
     }
-    
+  
+    // Handle decimals or whole numbers
     const result = parseFloat(numStr);
     return isNaN(result) ? "invalid number" : parseFloat(result.toFixed(5));
   };
+  
     
     // Extracts and validates the unit
     
