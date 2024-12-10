@@ -1,3 +1,5 @@
+/* I have utilized ChatGPT and Perplexity as resources for guidance and learning throughout this project. My approach reflects the growing trend of modern developers using AI tools to enhance their coding processes. However, all the final code presented here is my own work, based on own independently thought out  prompts and without copying prompts or code from others other than snippets. I believe this practice aligns with the principles of academic honesty, as it emphasizes learning and using technology responsibly. */
+
 const chai = require('chai');
 let assert = chai.assert;
 const ConvertHandler = require('../controllers/convertHandler.js');
@@ -44,6 +46,20 @@ suite('Unit Tests', function(){
       done();
     }); 
     
+    suite('Function convertHandler.getNum(input)', function() {
+        test('Mixed Fractional and Decimal Input', function(done) {
+            let input = '2.5/5kg';
+            assert.equal(convertHandler.getNum(input), 0.5);
+            done();
+        });
+        
+        test('Invalid Fraction (double slash)', function(done) {
+            let input = '3/4/5gal';
+            assert.equal(convertHandler.getNum(input), 'invalid number');
+            done();
+        });
+    });
+
   });
   
   suite('Function convertHandler.getUnit(input)', function() {
